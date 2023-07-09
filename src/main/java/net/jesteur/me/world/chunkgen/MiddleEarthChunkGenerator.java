@@ -6,7 +6,7 @@ import net.jesteur.me.world.biomes.MEBiome;
 import net.jesteur.me.world.biomes.MEBiomeKeys;
 import net.jesteur.me.world.biomes.MEBiomesData;
 import net.jesteur.me.world.biomes.ModBiomeSource;
-import net.jesteur.me.world.chunkgen.map.MapImageLoader;
+import net.jesteur.me.world.chunkgen.map.MapManager;
 import net.jesteur.me.world.chunkgen.map.MiddleEarthHeightMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -127,16 +127,9 @@ public class MiddleEarthChunkGenerator extends ChunkGenerator {
             for(int z = 0; z < 16; z++) {
                 int posX = (chunk.getPos().x * 16) + x;
                 int posZ = (chunk.getPos().z * 16) + z;
-                MEBiome meBiome;
+                MEBiome meBiome = MapManager.biomeMap.get(posX, posZ);
 
-                if(MiddleEarthHeightMap.isCoordinateInBounds(posX, posZ)) {
-                    meBiome = MEBiomesData.biomeHeights.get(new Color(MapImageLoader.getBiomeColor(posX, posZ)));
-                } else {
-                    meBiome = MEBiomesData.defaultBiome;
-                }
-
-                float height = MiddleEarthHeightMap.getSmoothHeight(posX, posZ);
-                height += MiddleEarthHeightMap.getPerlinHeight(posX, posZ);
+                float height = MapManager.heightMap.get(posX, posZ);
 
                 for(int y = bottomY + 1; y <= WATER_HEIGHT; y++) {
                     chunk.setBlockState(chunk.getPos().getBlockPos(x, y, z), Blocks.WATER.getDefaultState(), false);
@@ -197,7 +190,7 @@ public class MiddleEarthChunkGenerator extends ChunkGenerator {
 
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView world, NoiseConfig noiseConfig) {
-        float worldHeight = 1 + DIRT_HEIGHT + MiddleEarthHeightMap.getHeight(x, z) + MiddleEarthHeightMap.getPerlinHeight(x, z);;
+        float worldHeight = 1 + DIRT_HEIGHT + MiddleEarthHeightMap.getHeight(x, z) + MiddleEarthHeightMap.getPerlinHeight(x, z);
         return (int)worldHeight;
     }
 

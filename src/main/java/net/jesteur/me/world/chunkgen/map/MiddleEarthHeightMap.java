@@ -33,36 +33,11 @@ public class MiddleEarthHeightMap {
     }
 
     public static float getPerlinHeight(int x, int z) {
-        double additionalHeight;
-        MEBiome meBiome;
-
-        double perlin = 1 * PerlinNoise.noise((double) x / PERLIN_STRETCH_X, 0,  (double) z / PERLIN_STRETCH_Y);
-        perlin += 0.5f * PerlinNoise.noise((double) x * 2 / PERLIN_STRETCH_X, 0,  (double) z * 2 / PERLIN_STRETCH_Y);
-        perlin += 0.25f * PerlinNoise.noise((double) x * 4 / PERLIN_STRETCH_X, 0,  (double) z * 4 / PERLIN_STRETCH_Y);
-        perlin += 0.125f * PerlinNoise.noise((double) x * 8 / PERLIN_STRETCH_X, 0,  (double) z * 8 / PERLIN_STRETCH_Y);
-
-        perlin = perlin / (1 + 0.5f + 0.25f + 0.125f);
-        perlin *= PERLIN_HEIGHT_RANGE;
-        perlin += PERLIN_HEIGHT_OFFSET;
-
-        if(MiddleEarthHeightMap.isCoordinateInBounds(x, z)) {
-            float biomeHeight = MiddleEarthHeightMap.getHeight(x, z);
-            if(biomeHeight >= MOUNTAIN_START_HEIGHT) {
-                float multiplier = 2f * (biomeHeight / MOUNTAIN_START_HEIGHT);
-                //perlin2 *= 1 + ((multiplier - 1) / 3);
-                perlin *= Math.max(3 - multiplier, multiplier * MOUNTAIN_HEIGHT_RANGE * PerlinNoise.noise((double) x / PERLIN_STRETCH_X2, 0,  (double) z / PERLIN_STRETCH_Y2));
-            }
-            additionalHeight = biomeHeight + perlin;
-        } else {
-            meBiome = MEBiomesData.defaultBiome;
-            additionalHeight = meBiome.height + perlin;
-        }
-        return (float) additionalHeight;
+        return 1;
     }
 
     public static float getHeight(int x, int z) {
-        if(!isCoordinateInBounds(x, z)) return MEBiomesData.defaultBiome.height + (float)getPerlinHeight(x, z);
-        return ((float) ((heightMapImage.getRGB(x, z)>>16)&0xFF) / 4) + MEBiomesData.MINIMAL_HEIGHT;
+        return 1;
     }
 
     public static float getSmoothHeight(int x, int z) {

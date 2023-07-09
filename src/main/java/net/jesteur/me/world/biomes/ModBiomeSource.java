@@ -1,7 +1,7 @@
 package net.jesteur.me.world.biomes;
 
 import com.mojang.serialization.Codec;
-import net.jesteur.me.world.chunkgen.map.MapImageLoader;
+import net.jesteur.me.world.chunkgen.map.MapManager;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
@@ -9,7 +9,6 @@ import net.minecraft.world.biome.source.BiomeCoords;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
@@ -35,9 +34,7 @@ public class ModBiomeSource extends BiomeSource {
         int i = BiomeCoords.toBlock(x);
         int k = BiomeCoords.toBlock(z);
 
-        if(!MapImageLoader.isCoordinateInImage(i, k)) return biomes.get(0);
-        Color color = new Color(MapImageLoader.getBiomeColor(i, k));
-        MEBiome meBiome = MEBiomesData.biomeHeights.get(color);
+        MEBiome meBiome = MapManager.biomeMap.get(i, k);
         RegistryKey<Biome> biome = meBiome.biome;
 
         return biomes.stream().filter(

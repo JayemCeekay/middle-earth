@@ -31,7 +31,7 @@ public class PerlinNoise {
         double t = .6 - x * x - y * y - z * z;
         int h = shuffle(i + A[0], j + A[1], k + A[2]);
 
-        A[a]++;
+        A[Math.max(Math.min(a, A.length - 1), 0)]++;
 
         if (t < 0)
             return 0;
