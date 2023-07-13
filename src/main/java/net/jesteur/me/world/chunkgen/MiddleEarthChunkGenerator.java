@@ -39,10 +39,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class MiddleEarthChunkGenerator extends ChunkGenerator {
-    public static final int STONE_HEIGHT = 32;
+    public static final int DEEPSTONE_HEIGHT = 32;
     public static final int WATER_HEIGHT = 64;
-    public static final int HEIGHT = 24 + STONE_HEIGHT;
-    public static final int DIRT_HEIGHT = 3 + HEIGHT;
+    public static final int DIRT_HEIGHT = 3;
 
     RegistryEntryLookup<Biome> biomeRegistry;
     public static final Codec<MiddleEarthChunkGenerator> CODEC = RecordCodecBuilder.create((instance) ->
@@ -131,26 +130,32 @@ public class MiddleEarthChunkGenerator extends ChunkGenerator {
 
                 float height = MapManager.heightMap.get(posX, posZ);
 
-                for(int y = bottomY + 1; y <= WATER_HEIGHT; y++) {
-                    chunk.setBlockState(chunk.getPos().getBlockPos(x, y, z), Blocks.WATER.getDefaultState(), false);
+                int y = 0;
+
+                for (; y < 1 + (Math.random() > 0.5 ? 1 : 0) ; y++) {
+                    chunk.setBlockState(chunk.getPos().getBlockPos(x, y, z), Blocks.BEDROCK.getDefaultState(), false);
                 }
-                chunk.setBlockState(chunk.getPos().getBlockPos(x, bottomY, z), Blocks.BEDROCK.getDefaultState(), false);
-                for(int y = bottomY + 1; y < STONE_HEIGHT + height; y++) {
+
+                for (; y < Math.min(height, DEEPSTONE_HEIGHT) ; y++) {
                     chunk.setBlockState(chunk.getPos().getBlockPos(x, y, z), meBiome.deepStoneBlock.getDefaultState(), false);
                 }
-                if(Math.random() < 0.5f) chunk.setBlockState(chunk.getPos().getBlockPos(x, chunk.getBottomY() + 1, z), Blocks.BEDROCK.getDefaultState(), false);
-                for(int y = (int) (STONE_HEIGHT + height); y < HEIGHT + height; y++) {
+
+                for (; y < height - DIRT_HEIGHT ; y++) {
                     chunk.setBlockState(chunk.getPos().getBlockPos(x, y, z), meBiome.stoneBlock.getDefaultState(), false);
                 }
-                for(int y = (int) (HEIGHT + height); y < DIRT_HEIGHT + height; y++) {
+
+                for (; y < height ; y++) {
                     chunk.setBlockState(chunk.getPos().getBlockPos(x, y, z), meBiome.underSurfaceBlock.getDefaultState(), false);
                 }
 
-                BlockState surfaceBlock = meBiome.surfaceBlock.getDefaultState();
-                if(DIRT_HEIGHT + height < WATER_HEIGHT && meBiome.surfaceBlock == Blocks.GRASS_BLOCK) {
-                    surfaceBlock = Blocks.DIRT.getDefaultState();
+                if (y >= WATER_HEIGHT) {
+                    chunk.setBlockState(chunk.getPos().getBlockPos(x, y - 1, z), meBiome.surfaceBlock.getDefaultState(), false);
                 }
-                chunk.setBlockState(chunk.getPos().getBlockPos(x, (int) (DIRT_HEIGHT + height), z), surfaceBlock, false);
+
+                while (y < WATER_HEIGHT) {
+                    chunk.setBlockState(chunk.getPos().getBlockPos(x, y, z), Blocks.WATER.getDefaultState(), false);
+                    y++;
+                }
             }
         }
 

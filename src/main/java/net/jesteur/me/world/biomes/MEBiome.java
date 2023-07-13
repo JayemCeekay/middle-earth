@@ -12,6 +12,8 @@ public class MEBiome {
     public Block stoneBlock;
     public Block deepStoneBlock;
 
+    public float heightChange = 8;
+
     public MEBiome(float height, RegistryKey<Biome> biome, Block surfaceBlock, Block underSurfaceBlock, Block stoneBlock, Block deepStoneBlock) {
         this.height = height;
         this.biome = biome;

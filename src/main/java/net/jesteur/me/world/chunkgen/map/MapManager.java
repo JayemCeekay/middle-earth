@@ -28,14 +28,23 @@ public class MapManager {
         BufferedImage img;
         try {
             img = ImageIO.read(resource);
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
+            System.err.println(ex.getMessage());
+            ex.printStackTrace();
+            throw ex;
+        }
+        URL heightMapResource = classLoader.getResource("assets/" + MiddleEarth.MOD_ID + "/textures/heightmap.png");
+        BufferedImage heightmapImg;
+        try {
+            heightmapImg = ImageIO.read(heightMapResource);
+        } catch (IOException | NullPointerException ex) {
             System.err.println(ex.getMessage());
             ex.printStackTrace();
             throw ex;
         }
 
         biomeMap = new BiomeMap(img, size, random);
-        heightMap = new HeightMap(biomeMap, random);
+        heightMap = new HeightMap(biomeMap, random, heightmapImg);
     }
 
 }
