@@ -1,17 +1,22 @@
 package net.jesteur.me.world.biomes;
 
-import net.jesteur.me.block.ModBlockSets;
+import net.jesteur.me.block.SimpleBlockSets;
 import net.jesteur.me.block.ModBlocks;
 import net.minecraft.block.Blocks;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.world.biome.Biome;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Converts PNG pixel color to a BiomeKey reference.
  */
 public class MEBiomesData {
     public static HashMap<Integer, MEBiome> biomeMap = new HashMap<>();
+    public static List<RegistryKey<Biome>> waterBiomes = new ArrayList<>();
     public static MEBiome defaultBiome;
 
     /// Only supports height value from -22 to 41
@@ -73,5 +78,12 @@ public class MEBiomesData {
         addBiome(new Color(156, 150, 150), new MEBiome(13, MEBiomeKeys.TOLFALAS, Blocks.GRASS_BLOCK, Blocks.STONE, Blocks.STONE, Blocks.STONE));
         addBiome(new Color(225, 192, 133), new MEBiome(7, MEBiomeKeys.UMBAR, Blocks.GRASS_BLOCK, Blocks.SANDSTONE, Blocks.STONE, Blocks.STONE));
         addBiome(new Color(219, 245, 215), new MEBiome(36, MEBiomeKeys.WHITE_MOUNTAINS, Blocks.CALCITE, Blocks.CALCITE, Blocks.STONE, Blocks.STONE));
+
+        waterBiomes.add(MEBiomeKeys.OCEAN);
+        waterBiomes.add(MEBiomeKeys.OCEAN_COAST);
+        waterBiomes.add(MEBiomeKeys.LONG_LAKE);
+        waterBiomes.add(MEBiomeKeys.MILLPOND);
+        waterBiomes.add(MEBiomeKeys.NURN_SEA);
+        waterBiomes.add(MEBiomeKeys.SEA_OF_RHUN);
     }
 }
