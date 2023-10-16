@@ -21,6 +21,8 @@ public class ModEggItems {
             new SpawnEggItem(ModEntities.HOBBIT, 11131454, 13810794, new Item.Settings()));
     public static final Item GALADHRIM_ELF_SPAWN_EGG = registerItem("galadhrim_elf_spawn_egg",
             new SpawnEggItem(ModEntities.GALADHRIM_ELF, 15388227, 8950161, new Item.Settings()));
+    public static final Item GONDORIAN_SPAWN_EGG = registerItem("gondorian_spawn_egg",
+            new SpawnEggItem(ModEntities.GONDORIAN, 16250871, 2500134, new Item.Settings()));
     public static final Item MORDOR_ORC_SPAWN_EGG = registerItem("mordor_orc_spawn_egg",
             new SpawnEggItem(ModEntities.MORDOR_ORC, 4209210, 7682104, new Item.Settings()));
     public static final Item SNOW_TROLL_SPAWN_EGG = registerItem("snow_troll_spawn_egg",
